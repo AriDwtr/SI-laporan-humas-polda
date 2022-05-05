@@ -2247,7 +2247,7 @@ input.search-control-2::placeholder {
 
 .header-notifications-list {
 	position: relative;
-	height: 360px
+	height: auto
 }
 
 .dropdown-large .notify {
