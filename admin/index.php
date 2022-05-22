@@ -1,11 +1,14 @@
 <?php
 session_start();
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION['id_staff'])) {
 	header("Location: ../login.php");
+	exit();
 }
 ?>
 
-
+<?php
+date_default_timezone_set('Asia/Jakarta');
+?>
 <!doctype html>
 <html lang="en" class="color-sidebar sidebarcolor7 color-header headercolor2">
 
@@ -16,11 +19,12 @@ if (!isset($_SESSION['username'])) {
 	<!--favicon-->
 	<link rel="icon" href="../assets/images/polda.png" type="image/png" />
 	<!--plugins-->
-	<link href="../assets/plugins/notifications/css/lobibox.min.css" rel="stylesheet" />
-	<link href="../assets/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
 	<link href="../assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
 	<link href="../assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
 	<link href="../assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+	<link href="../assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+	<link href="../assets/plugins/fancy-file-uploader/fancy_fileupload.css" rel="stylesheet" />
+	<link href="../assets/plugins/Drag-And-Drop/dist/imageuploadify.min.css" rel="stylesheet" />
 	<!-- loader-->
 	<link href="../assets/css/pace.min.css" rel="stylesheet" />
 	<script src="../assets/js/pace.min.js"></script>
@@ -36,7 +40,7 @@ if (!isset($_SESSION['username'])) {
 	<title>SI-Laporan Kegiatan</title>
 </head>
 
-<body onload="info_noti()">
+<body>
 	<!--wrapper-->
 	<div class="wrapper">
 		<!--sidebar wrapper -->
@@ -60,17 +64,52 @@ if (!isset($_SESSION['username'])) {
 						<div class="menu-title">Dashboard</div>
 					</a>
 				</li>
-				<li class="menu-label">Menu Staff</li>
+				<li>
+					<a href="index.php?page=profile">
+						<div class="parent-icon"><i class='bx bx-user-circle'></i>
+						</div>
+						<div class="menu-title">Profile</div>
+					</a>
+				</li>
+				<li>
+					<a href="index.php?page=laporan_kegiatan">
+						<div class="parent-icon"><i class='bx bx-task'></i>
+						</div>
+						<div class="menu-title">Laporan Kegiatan</div>
+					</a>
+				</li>
+				<li class="menu-label">Menu Laporan</li>
+				<li>
+					<a href="javascript:;" class="has-arrow">
+						<div class="parent-icon"><i class='bx bx-chalkboard'></i>
+						</div>
+						<div class="menu-title">Laporan</div>
+					</a>
+					<ul>
+						<li>
+							<a href="index.php?page=add_laporan"><i class="bx bx-calendar-star"></i>Buat Laporan</a>
+						</li>
+						<li>
+							<a href="index.php?page=riwayat_laporan"><i class="bx bx-history"></i>Riwayat Laporan</a>
+						</li>
+						<li>
+							<a href="index.php?page=add_jenislaporan"><i class="bx bx-book-add"></i>Tambah Jenis Laporan</a>
+						</li>
+						<!-- <li> <a href="index.php?page=list_anggota"><i class="bx bx-user-check"></i>List Anggota</a>
+						</li> -->
+					</ul>
+				</li>
+				<li class="menu-label">Menu Anggota</li>
 				<li>
 					<a href="javascript:;" class="has-arrow">
 						<div class="parent-icon"><i class='bx bx-user'></i>
 						</div>
-						<div class="menu-title">Staff</div>
+						<div class="menu-title">Anggota</div>
 					</a>
 					<ul>
-						<li> <a href="index.php?page=add_staff"><i class="bx bx-right-arrow-alt"></i>Tambah Staff</a>
+						<li> <a href="index.php?page=add_anggota"><i class="bx bx-user-plus"></i>Tambah Anggota</a>
 						</li>
-						<li> <a href="index2.html"><i class="bx bx-right-arrow-alt"></i>List Staff</a>
+						<li> <a href="index.php?page=list_anggota"><i class="bx bx-user-check"></i>List Anggota</a>
 						</li>
 					</ul>
 				</li>
@@ -117,9 +156,9 @@ if (!isset($_SESSION['username'])) {
 								</div>
 							</li>
 							<li class="nav-item dropdown dropdown-large">
-								<a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="alert-count">8</span>
+								<!-- <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="alert-count">8</span>
 									<i class='bx bx-comment'></i>
-								</a>
+								</a> -->
 								<div class="dropdown-menu dropdown-menu-end">
 									<a href="javascript:;">
 										<div class="msg-header">
@@ -272,12 +311,12 @@ if (!isset($_SESSION['username'])) {
 						<a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							<img src="../assets/images/team.png" class="user-img" alt="user avatar">
 							<div class="user-info ps-3">
-								<p class="user-name mb-0"><?= strtoupper($_SESSION['username']); ?></p>
+								<p class="user-name mb-0"><?= ucwords($_SESSION['nama']); ?></p>
 								<p class="designattion mb-0">Administrator</p>
 							</div>
 						</a>
 						<ul class="dropdown-menu dropdown-menu-end">
-							<li><a class="dropdown-item" href="javascript:;"><i class="bx bx-user"></i><span>Profile</span></a>
+							<li><a class="dropdown-item" href="index.php?page=profile"><i class="bx bx-user"></i><span>Profile</span></a>
 							</li>
 							<li>
 								<div class="dropdown-divider mb-0"></div>
@@ -302,8 +341,49 @@ if (!isset($_SESSION['username'])) {
 						case 'dashboard':
 							include "home.php";
 							break;
-						case 'add_staff':
-							include "staff/add_staff.php";
+						case 'profile':
+							include "profile.php";
+							break;
+						case 'laporan_kegiatan':
+							include "laporan_kegiatan.php";
+							break;
+						case 'confirm_laporan':
+							include "laporan/confirm_laporan.php";
+							break;
+							//anggota
+						case 'add_anggota':
+							include "staff/add_anggota.php";
+							break;
+						case 'list_anggota':
+							include "staff/list_anggota.php";
+							break;
+						case 'edit_anggota':
+							include "staff/edit_anggota.php";
+							break;
+						case 'delete_anggota':
+							include "staff/delete_anggota.php";
+							break;
+							// laporan
+						case 'add_laporan':
+							include "laporan/add_laporan.php";
+							break;
+						case 'upload_laporan':
+							include "laporan/upload_laporan.php";
+							break;
+						case 'edit_laporan':
+							include "laporan/edit_laporan.php";
+							break;
+						case 'delete_laporan':
+							include "laporan/delete_laporan.php";
+							break;
+						case 'riwayat_laporan':
+							include "laporan/riwayat_laporan.php";
+							break;
+						case 'add_jenislaporan':
+							include "laporan/add_jenis_laporan.php";
+							break;
+						case 'delete_jenis_laporan':
+							include "laporan/delete_jenis_laporan.php";
 							break;
 						default:
 							echo "<center><h3>Maaf. Halaman tidak di temukan !</h3></center>";
@@ -323,7 +403,7 @@ if (!isset($_SESSION['username'])) {
 		<!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
 		<!--End Back To Top Button-->
 		<footer class="page-footer">
-			<p class="mb-0">Copyright © 2021. All right reserved.</p>
+			<p class="mb-0">Copyright © 2022. Humas Polda Sumsel.</p>
 		</footer>
 	</div>
 	<!--end wrapper-->
@@ -334,22 +414,58 @@ if (!isset($_SESSION['username'])) {
 	<script src="../assets/plugins/simplebar/js/simplebar.min.js"></script>
 	<script src="../assets/plugins/metismenu/js/metisMenu.min.js"></script>
 	<script src="../assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+	<script src="../assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+	<script src="../assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
+	<script src='https://cdn.tiny.cloud/1/vdqx2klew412up5bcbpwivg1th6nrh3murc6maz8bukgos4v/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
+	<script src="../assets/plugins/fancy-file-uploader/jquery.ui.widget.js"></script>
+	<script src="../assets/plugins/fancy-file-uploader/jquery.fileupload.js"></script>
+	<script src="../assets/plugins/fancy-file-uploader/jquery.iframe-transport.js"></script>
+	<script src="../assets/plugins/fancy-file-uploader/jquery.fancy-fileupload.js"></script>
+	<script src="../assets/plugins/Drag-And-Drop/dist/imageuploadify.min.js"></script>
 	<script>
-        $(document).ready(function() {
-            $("#show_hide_password a").on('click', function(event) {
-                event.preventDefault();
-                if ($('#show_hide_password input').attr("type") == "text") {
-                    $('#show_hide_password input').attr('type', 'password');
-                    $('#show_hide_password i').addClass("bx-hide");
-                    $('#show_hide_password i').removeClass("bx-show");
-                } else if ($('#show_hide_password input').attr("type") == "password") {
-                    $('#show_hide_password input').attr('type', 'text');
-                    $('#show_hide_password i').removeClass("bx-hide");
-                    $('#show_hide_password i').addClass("bx-show");
-                }
-            });
-        });
-    </script>
+		$(document).ready(function() {
+			$("#show_hide_password a").on('click', function(event) {
+				event.preventDefault();
+				if ($('#show_hide_password input').attr("type") == "text") {
+					$('#show_hide_password input').attr('type', 'password');
+					$('#show_hide_password i').addClass("bx-hide");
+					$('#show_hide_password i').removeClass("bx-show");
+				} else if ($('#show_hide_password input').attr("type") == "password") {
+					$('#show_hide_password input').attr('type', 'text');
+					$('#show_hide_password i').removeClass("bx-hide");
+					$('#show_hide_password i').addClass("bx-show");
+				}
+			});
+
+			window.setTimeout(function() {
+				$(".alert").fadeTo(1000, 0).slideUp(1000, function() {
+					$(this).remove();
+				});
+			}, 2000);
+
+			$(document).ready(function() {
+				$('#example').DataTable();
+			});
+
+			tinymce.init({
+				selector: '#mytextarea'
+			});
+
+			$('#fancy-file-upload').FancyFileUpload({
+				params: {
+					action: 'fileuploader'
+				},
+				maxfilesize: 1000000
+			});
+
+			$(document).ready(function() {
+				$('#image-uploadify').imageuploadify();
+			})
+			$(document).ready(function() {
+				$('#image-uploadify2').imageuploadify();
+			})
+		});
+	</script>
 	<!--app JS-->
 	<script src="../assets/js/app.js"></script>
 </body>

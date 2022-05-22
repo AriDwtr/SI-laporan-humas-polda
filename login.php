@@ -35,22 +35,31 @@
                         <?php
                         if (isset($_POST['submit'])) {
                             include "conn/conn.php";
-                            $username = $_POST['username'];
+                            $nrp = $_POST['NRP'];
                             $pass = $_POST['pass'];
 
-                            $query = mysqli_query($conn, "SELECT * FROM staff WHERE username = '$username' AND password = '$pass'");
+                            $query = mysqli_query($conn, "SELECT * FROM staff WHERE nrp = '$nrp' AND password = '$pass'");
                             $cek_user = mysqli_num_rows($query);
                             if ($cek_user > 0) {
+                                $data = mysqli_fetch_array($query);
                                 session_start();
-                                $_SESSION['username'] = $username;
-                                header("location:admin/index.php");
+                                $_SESSION['nrp'] = $nrp;
+                                $_SESSION['nama'] = $data['nama'];
+                                $_SESSION['id_staff'] = $data['id_staff'];
+                                if ($data['tipe']=="admin") {
+                                    header("location:admin/index.php");
+                                    exit();
+                                }elseif($data['tipe']=="anggota"){
+                                    header("location:anggota/index.php");
+                                    exit();
+                                }
                             } else {
                                 echo ' <div class="alert alert-danger border-0 bg-danger alert-dismissible fade show py-2">
                                         <div class="d-flex align-items-center">
                                             <div class="font-35 text-white"><i class="bx bxs-message-square-x"></i>
                                             </div>
                                             <div class="ms-3">
-                                                <div class="text-white">Username & password salah Mohon  cek ulang</div>
+                                                <div class="text-white">NRP & password salah Mohon  cek ulang</div>
                                             </div>
                                         </div>
                                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -65,11 +74,11 @@
                                     <div class="form-body">
                                         <form class="row g-3" method="POST" action="" enctype="multipart/form-data">
                                             <div class="col-12">
-                                                <label for="inputEmailAddress" class="form-label">Enter Username</label>
-                                                <input type="text" name="username" class="form-control" id="inputEmailAddress" placeholder="Username">
+                                                <label for="inputEmailAddress" class="form-label">Masukan NRP</label>
+                                                <input type="text" name="NRP" class="form-control" id="inputEmailAddress" placeholder="No. NRP">
                                             </div>
                                             <div class="col-12">
-                                                <label for="inputChoosePassword" class="form-label">Enter Password</label>
+                                                <label for="inputChoosePassword" class="form-label">Masukan Password</label>
                                                 <div class="input-group" id="show_hide_password">
                                                     <input type="password" name="pass" class="form-control border-end-0" id="inputChoosePassword" placeholder="Enter Password"> <a href="javascript:;" class="input-group-text bg-transparent"><i class='bx bx-hide'></i></a>
                                                 </div>
@@ -113,6 +122,13 @@
                     $('#show_hide_password i').addClass("bx-show");
                 }
             });
+
+            window.setTimeout(function() {
+                $(".alert").fadeTo(1000, 0).slideUp(1000, function() {
+                    $(this).remove();
+                });
+            }, 2000);
+
         });
     </script>
     <!--app JS-->
