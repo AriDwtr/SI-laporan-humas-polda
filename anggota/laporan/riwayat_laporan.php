@@ -90,7 +90,13 @@
                                 <center><span class="badge <?= $data['status']=="DITERIMA" ? ' bg-success' : ' bg-danger'?>"><?= $data['status'] ?></span></center>
                             </td>
                             <td>
-                            <a href="index.php?page=edit_laporan&id=<?= $data['id_laporan'] ?>"><i class="bx bxs-pencil"></i> Edit</a> | <a href="index.php?page=delete_laporan&id=<?= $data['id_laporan'] ?>" style="color:red" onClick="return confirm('Delete This Laporan ?')"><i class="bx bxs-trash"></i> Hapus</a>
+                            <?php
+                            if ($data['status']=="DITERIMA") {
+                             echo '----';
+                            }else { ?>
+                              <a href="index.php?page=edit_laporan&id=<?= $data['id_laporan'] ?>"><i class="bx bxs-pencil"></i> Edit</a> | <a href="index.php?page=delete_laporan&id=<?= $data['id_laporan'] ?>" style="color:red" onClick="return confirm('Delete This Laporan ?')"><i class="bx bxs-trash"></i> Hapus</a>
+                            <?php }
+                            ?>
                             </td>
                         </tr>
                     <?php
