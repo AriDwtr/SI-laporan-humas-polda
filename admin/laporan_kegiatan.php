@@ -77,7 +77,7 @@
                                         $id_laporan = $data['id_laporan'];
                                         $query_foto = mysqli_query($conn, "SELECT * FROM foto_kegiatan WHERE id_laporan = '$id_laporan'");
                                          while ($foto = mysqli_fetch_array($query_foto)) {
-                                          echo  '<img src="file/'.$foto['foto'].'" width="150" height="120" class="border rounded cursor-pointer mr-5" alt=""> ';
+                                          echo  '<img src="../file/'.$foto['foto'].'" width="150" height="120" class="border rounded cursor-pointer mr-5" alt=""> ';
                                          }
                                         ?>
                                     </div>
@@ -89,7 +89,7 @@
                                          while ($video = mysqli_fetch_array($query_video)) {
                                           echo  '
                                           <video width="320" height="240" controls>
-                                            <source src="file/'.$video['video'].'" type="video/mp4">
+                                            <source src="../file/'.$video['video'].'" type="video/mp4">
                                             </video>
                                           ';
                                          }
@@ -103,7 +103,7 @@
                             }else {
                             ?>
                             <a href="index.php?page=confirm_laporan&&id=<?= $data['id_laporan'] ?>" class="btn btn-sm btn-success" onClick="return confirm('Apakah Laporan Sudah Benar ?')">Terima Laporan</a>
-                            <!-- <a href="" class="btn btn-sm btn-danger">Tolak Laporan</a> -->
+                            <a href="index.php?page=tolak_laporan&&id=<?= $data['id_laporan'] ?>" class="btn btn-sm btn-danger">Tolak Laporan</a>
                             <?php } ?>
                         </div>
                     </div>

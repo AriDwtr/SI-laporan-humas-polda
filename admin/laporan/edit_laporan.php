@@ -23,7 +23,7 @@ if (isset($_POST['submit'])) {
     $tgl = $_POST['tgl'];
     $mytextarea = $_POST['mytextarea'];
     $created_at = date('Y-m-d');
-    mysqli_query($conn,"UPDATE laporan_kegiatan SET judul_laporan='$judul',id_jenis_laporan='$id_jenis',lokasi='$lokasi',tgl='$tgl',isi='$mytextarea',created_at='$created_at' WHERE id_laporan='$id_laporan'");
+    mysqli_query($conn,"UPDATE laporan_kegiatan SET judul_laporan='$judul',id_jenis_laporan='$id_jenis',lokasi='$lokasi',tgl='$tgl',isi='$mytextarea',created_at='$created_at',status='PENDING' WHERE id_laporan='$id_laporan'");
     echo "<script>window.location.href='index.php?page=riwayat_laporan';</script>'";
 }
 ?>

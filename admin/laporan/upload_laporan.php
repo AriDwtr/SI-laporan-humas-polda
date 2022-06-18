@@ -24,14 +24,14 @@ if (isset($_POST['submit'])) {
             $fileName        = $_FILES['foto']['name'][$id];
             $tempLocation    = $_FILES['foto']['tmp_name'][$id];
             $alias_foto = date('d-m-Y').'-'.$fileName ; 
-            $move = move_uploaded_file($tempLocation, 'file/'. $alias_foto);
+            $move = move_uploaded_file($tempLocation, '../file/'. $alias_foto);
             $result = mysqli_query($conn, "INSERT INTO foto_kegiatan (id_foto,id_laporan,foto) VALUES ('','$id_laporan','$alias_foto')");
         }
-        foreach ($_FILES['video']['name'] as $id=>$val) {
-            $fileName_video        = $_FILES['video']['name'][$id];
-            $tempLocation_video    = $_FILES['video']['tmp_name'][$id];
+        foreach ($_FILES['video']['name'] as $id_video=>$val_video) {
+            $fileName_video        = $_FILES['video']['name'][$id_video];
+            $tempLocation_video    = $_FILES['video']['tmp_name'][$id_video];
             $alias_video = date('d-m-Y').'-'.$fileName_video ; 
-            move_uploaded_file($tempLocation_video, 'file/'. $alias_video);
+            move_uploaded_file($tempLocation_video, '../file/'. $alias_video);
             mysqli_query($conn, "INSERT INTO video_kegiatan (id_video,id_laporan,video) VALUES ('','$id_laporan','$alias_video')");
         }
 }

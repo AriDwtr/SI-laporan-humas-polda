@@ -156,7 +156,7 @@ function tgl_indo($tanggal){
                     include "../conn/conn.php";
                     $no = 1;
                     $id_staff = $_SESSION['id_staff'];
-                    $query = mysqli_query($conn, "SELECT * FROM laporan_kegiatan as a JOIN jenis_laporan as b ON b.id_jenis_laporan = a.id_jenis_laporan");
+                    $query = mysqli_query($conn, "SELECT * FROM laporan_kegiatan as a JOIN jenis_laporan as b ON b.id_jenis_laporan = a.id_jenis_laporan WHERE a.status='DITERIMA'");
                     while ($data = mysqli_fetch_array($query)) { ?>
                         <tr>
                             <td>

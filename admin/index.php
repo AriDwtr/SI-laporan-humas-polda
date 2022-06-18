@@ -350,6 +350,9 @@ date_default_timezone_set('Asia/Jakarta');
 						case 'confirm_laporan':
 							include "laporan/confirm_laporan.php";
 							break;
+						case 'tolak_laporan':
+							include "laporan/tolak_laporan.php";
+							break;
 							//anggota
 						case 'add_anggota':
 							include "staff/add_anggota.php";
@@ -448,13 +451,13 @@ date_default_timezone_set('Asia/Jakarta');
 			});
 
 			$(document).ready(function() {
-			var table = $('#example2').DataTable( {
-				lengthChange: false,
-				buttons: [ 'copy', 'excel', 'pdf', 'print']
-			} );
-		 
-			table.buttons().container()
-				.appendTo( '#example2_wrapper .col-md-6:eq(0)' );
+				var table = $('#example2').DataTable({
+					lengthChange: false,
+					buttons: ['copy', 'excel', 'pdf', 'print']
+				});
+
+				table.buttons().container()
+					.appendTo('#example2_wrapper .col-md-6:eq(0)');
 			});
 
 			tinymce.init({
